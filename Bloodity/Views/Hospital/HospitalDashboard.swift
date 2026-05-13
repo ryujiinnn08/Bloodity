@@ -251,6 +251,7 @@ struct HospitalDashboard: View {
     }
 
     @State private var completingRequestId: UUID?
+    @State private var rejectingRequestId: UUID?
 
     private func transfusionCard(_ request: BloodRequest) -> some View {
         let donorName = DataStore.shared.donors.first(where: { $0.id == request.matchedDonorId })?.name ?? "Unknown Donor"
@@ -298,36 +299,70 @@ struct HospitalDashboard: View {
                     .foregroundColor(.textPrimary)
             }
 
-            // Complete Transfusion button
-            Button {
-                completingRequestId = request.id
-                // Small delay for visual feedback
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    withAnimation(.spring(response: 0.4)) {
-                        viewModel.completeTransfusion(request)
-                        completingRequestId = nil
+            // Action buttons
+            HStack(spacing: BSpacing.md) {
+                // Reject button
+                Button {
+                    rejectingRequestId = request.id
+                } label: {
+                    HStack {
+                        Image(systemName: "xmark.circle.fill")
+                        Text("Reject")
                     }
+                    .font(BFont.headline(14))
+                    .foregroundColor(.bloodRed)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(
+                        RoundedRectangle(cornerRadius: BRadius.md)
+                            .stroke(Color.bloodRed, lineWidth: 1.5)
+                    )
                 }
-            } label: {
-                HStack {
-                    if completingRequestId == request.id {
-                        ProgressView()
-                            .tint(.white)
-                    } else {
-                        Image(systemName: "checkmark.seal.fill")
-                        Text("Complete Transfusion")
+                .alert("Reject Donor?", isPresented: Binding(
+                    get: { rejectingRequestId == request.id },
+                    set: { if !$0 { rejectingRequestId = nil } }
+                )) {
+                    Button("Cancel", role: .cancel) { rejectingRequestId = nil }
+                    Button("Reject", role: .destructive) {
+                        withAnimation(.spring(response: 0.4)) {
+                            viewModel.rejectTransfusion(request)
+                            rejectingRequestId = nil
+                        }
                     }
+                } message: {
+                    Text("The donor will be notified and the request will return to searching status.")
                 }
-                .font(BFont.headline(14))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 44)
-                .background(
-                    RoundedRectangle(cornerRadius: BRadius.md)
-                        .fill(Color.successGreen)
-                )
+
+                // Complete button
+                Button {
+                    completingRequestId = request.id
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        withAnimation(.spring(response: 0.4)) {
+                            viewModel.completeTransfusion(request)
+                            completingRequestId = nil
+                        }
+                    }
+                } label: {
+                    HStack {
+                        if completingRequestId == request.id {
+                            ProgressView()
+                                .tint(.white)
+                        } else {
+                            Image(systemName: "checkmark.seal.fill")
+                            Text("Complete")
+                        }
+                    }
+                    .font(BFont.headline(14))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(
+                        RoundedRectangle(cornerRadius: BRadius.md)
+                            .fill(Color.successGreen)
+                    )
+                }
+                .disabled(completingRequestId == request.id)
             }
-            .disabled(completingRequestId == request.id)
         }
         .padding(BSpacing.lg)
         .background(

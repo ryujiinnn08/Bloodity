@@ -2,12 +2,25 @@ import SwiftUI
 
 @Observable
 class DonorViewModel {
-    var currentUser: User
+    var currentUser: User {
+        get {
+            // Always sync cooldown state from DataStore (hospital may have updated it)
+            if let storeDonor = store.donors.first(where: { $0.id == _currentUser.id }) {
+                var merged = _currentUser
+                merged.lastDonationDate = storeDonor.lastDonationDate
+                merged.totalDonations = storeDonor.totalDonations
+                return merged
+            }
+            return _currentUser
+        }
+        set { _currentUser = newValue }
+    }
+    private var _currentUser: User
     var isAvailable: Bool
     let store = DataStore.shared
 
     init(user: User) {
-        self.currentUser = user
+        self._currentUser = user
         self.isAvailable = user.isAvailable
     }
 

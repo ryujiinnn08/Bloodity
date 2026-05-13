@@ -77,6 +77,7 @@ struct NotificationCenterView: View {
         case .newRequest: return .bloodRed
         case .donorFound: return .healBlue
         case .fulfilled: return .successGreen
+        case .requestUpdate: return .warmAmber
         case .eligibilityRestored: return .coralPink
         case .predictionAlert: return .warmAmber
         case .systemAlert: return .textSecondary

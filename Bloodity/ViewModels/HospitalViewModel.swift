@@ -110,4 +110,25 @@ class HospitalViewModel {
             store.donors[donorIndex].totalDonations += 1
         }
     }
+
+    func rejectTransfusion(_ request: BloodRequest) {
+        // Reset request back to searching — clears matched donor
+        if let index = store.bloodRequests.firstIndex(where: { $0.id == request.id }) {
+            withAnimation(.spring(response: 0.4)) {
+                store.bloodRequests[index].status = .searching
+                store.bloodRequests[index].matchedDonorId = nil
+            }
+        }
+
+        // Notify the donor
+        store.donorNotifications.insert(AppNotification(
+            id: UUID(),
+            title: "Donation Could Not Proceed",
+            message: "The medical team at \(request.hospitalName) was unable to proceed with the extraction for \(request.patientName). This does not affect your donor status.",
+            type: .requestUpdate,
+            isRead: false,
+            timestamp: Date(),
+            relatedRequestId: request.id
+        ), at: 0)
+    }
 }
