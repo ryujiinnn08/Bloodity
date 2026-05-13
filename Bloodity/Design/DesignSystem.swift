@@ -239,6 +239,7 @@ enum RequestStatus: String, CaseIterable, Codable {
     case searching = "Searching"
     case donorFound = "Donor Found"
     case onTheWay = "On the Way"
+    case donorArrived = "Donor Arrived"
     case fulfilled = "Fulfilled"
     case expired = "Expired"
 
@@ -247,6 +248,7 @@ enum RequestStatus: String, CaseIterable, Codable {
         case .searching: return .warmAmber
         case .donorFound: return .healBlue
         case .onTheWay: return .coralPink
+        case .donorArrived: return .successGreen
         case .fulfilled: return .successGreen
         case .expired: return .textSecondary
         }
@@ -257,6 +259,7 @@ enum RequestStatus: String, CaseIterable, Codable {
         case .searching: return "magnifyingglass"
         case .donorFound: return "person.fill.checkmark"
         case .onTheWay: return "figure.walk"
+        case .donorArrived: return "building.2.fill"
         case .fulfilled: return "checkmark.circle.fill"
         case .expired: return "clock.badge.xmark"
         }

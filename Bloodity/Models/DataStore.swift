@@ -83,7 +83,21 @@ class DataStore {
             )
             hospitalNotifications.insert(notif, at: 0)
 
-            // Phase 1: Real-time blood stock sync — donor adds units to hospital
+        case .donorArrived:
+            let donorName = donors.first(where: { $0.id == donorId })?.name ?? "A donor"
+            let notif = AppNotification(
+                id: UUID(),
+                title: "Donor Arrived: \(donorName)",
+                message: "\(donorName) (\(request.bloodTypeNeeded.rawValue)) has arrived at the facility for \(request.patientName). Please proceed with extraction.",
+                type: .donorFound,
+                isRead: false,
+                timestamp: Date(),
+                relatedRequestId: request.id
+            )
+            hospitalNotifications.insert(notif, at: 0)
+
+        case .fulfilled:
+            // Doctor completed the transfusion — add stock
             if let stockIndex = bloodStocks.firstIndex(where: { $0.bloodType == request.bloodTypeNeeded }) {
                 withAnimation(.spring(response: 0.4)) {
                     bloodStocks[stockIndex].unitsAvailable += request.unitsNeeded
@@ -91,18 +105,10 @@ class DataStore {
                 }
             }
 
-            // Auto-fulfill after simulated transfusion delay
-            let reqId = request.id
-            let donId = donorId
-            DispatchQueue.main.asyncAfter(deadline: .now() + 8) { [weak self] in
-                self?.updateRequestStatus(reqId, status: .fulfilled, donorId: donId)
-            }
-
-        case .fulfilled:
             let notif = AppNotification(
                 id: UUID(),
-                title: "Request Fulfilled",
-                message: "Blood request for \(request.patientName) (\(request.bloodTypeNeeded.rawValue)) has been fulfilled.",
+                title: "Transfusion Complete ✓",
+                message: "Blood extraction for \(request.patientName) (\(request.bloodTypeNeeded.rawValue), \(request.unitsNeeded) units) has been completed successfully.",
                 type: .fulfilled,
                 isRead: false,
                 timestamp: Date(),

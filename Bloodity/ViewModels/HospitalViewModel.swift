@@ -93,4 +93,21 @@ class HospitalViewModel {
     func approveRequest(_ request: BloodRequest) {
         store.updateRequestStatus(request.id, status: .donorFound)
     }
+
+    // Requests where donor has arrived and is waiting for extraction
+    var arrivedRequests: [BloodRequest] {
+        store.bloodRequests.filter { $0.status == .donorArrived }
+    }
+
+    func completeTransfusion(_ request: BloodRequest) {
+        // Mark as fulfilled — this triggers stock increment + notifications in DataStore
+        store.updateRequestStatus(request.id, status: .fulfilled, donorId: request.matchedDonorId)
+
+        // Set donor cooldown
+        if let donorId = request.matchedDonorId,
+           let donorIndex = store.donors.firstIndex(where: { $0.id == donorId }) {
+            store.donors[donorIndex].lastDonationDate = Date()
+            store.donors[donorIndex].totalDonations += 1
+        }
+    }
 }

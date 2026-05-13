@@ -204,18 +204,20 @@ struct DonorNavigationView: View {
                 .font(BFont.title(22))
                 .foregroundColor(.textPrimary)
 
-            Text("Proceed to \(request.ward) at \(request.hospitalName)")
+            Text("Proceed to \(request.ward) at \(request.hospitalName). The doctor will be notified and will handle the extraction process.")
                 .font(BFont.body(14))
                 .foregroundColor(.textSecondary)
                 .multilineTextAlignment(.center)
 
             Button {
+                // Set status to donorArrived — hospital will see this
+                DataStore.shared.updateRequestStatus(request.id, status: .donorArrived, donorId: donor.id)
                 onComplete()
                 dismiss()
             } label: {
                 HStack {
-                    Image(systemName: "checkmark.shield.fill")
-                    Text("Confirm Arrival")
+                    Image(systemName: "bell.badge.fill")
+                    Text("Notify Doctor You've Arrived")
                 }
             }
             .buttonStyle(PrimaryButtonStyle())

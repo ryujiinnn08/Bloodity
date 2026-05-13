@@ -26,6 +26,6 @@ struct BloodRequest: Identifiable, Codable, Hashable {
     }
 
     var isActive: Bool {
-        status == .searching || status == .donorFound || status == .onTheWay
+        status == .searching || status == .donorFound || status == .onTheWay || status == .donorArrived
     }
 }

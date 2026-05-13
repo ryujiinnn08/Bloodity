@@ -53,10 +53,6 @@ class DonorViewModel {
             unitsDonated: request.unitsNeeded
         )
         store.addDonation(donation)
-
-        // Start cooldown — makes the user ineligible for 56 days
-        currentUser.lastDonationDate = Date()
-        currentUser.totalDonations += 1
     }
 
     func declineRequest(_ request: BloodRequest) {

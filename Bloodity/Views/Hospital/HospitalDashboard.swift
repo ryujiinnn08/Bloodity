@@ -28,6 +28,11 @@ struct HospitalDashboard: View {
                         // Quick Actions
                         quickActions
 
+                        // Active Transfusions (donors who arrived)
+                        if !viewModel.arrivedRequests.isEmpty {
+                            activeTransfusionsSection
+                        }
+
                         // Active Requests
                         activeRequestsSection
                     }
@@ -218,6 +223,121 @@ struct HospitalDashboard: View {
             .padding(.vertical, BSpacing.lg)
             .glassCard()
         }
+    }
+
+    // MARK: - Active Transfusions (Donor Arrived)
+    private var activeTransfusionsSection: some View {
+        VStack(alignment: .leading, spacing: BSpacing.md) {
+            HStack {
+                HStack(spacing: BSpacing.sm) {
+                    Image(systemName: "syringe.fill")
+                        .foregroundColor(.successGreen)
+                    Text("Active Transfusions")
+                        .font(BFont.title(20))
+                        .foregroundColor(.textPrimary)
+                }
+
+                Spacer()
+
+                Text("\(viewModel.arrivedRequests.count) awaiting")
+                    .font(BFont.caption())
+                    .foregroundColor(.warmAmber)
+            }
+
+            ForEach(viewModel.arrivedRequests) { request in
+                transfusionCard(request)
+            }
+        }
+    }
+
+    @State private var completingRequestId: UUID?
+
+    private func transfusionCard(_ request: BloodRequest) -> some View {
+        let donorName = DataStore.shared.donors.first(where: { $0.id == request.matchedDonorId })?.name ?? "Unknown Donor"
+
+        return VStack(spacing: BSpacing.md) {
+            // Header
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(Color.successGreen.opacity(0.15))
+                        .frame(width: 40, height: 40)
+                    Image(systemName: "person.fill.checkmark")
+                        .font(.system(size: 16))
+                        .foregroundColor(.successGreen)
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(donorName)
+                        .font(BFont.headline(15))
+                        .foregroundColor(.textPrimary)
+                    Text("Arrived • Awaiting Extraction")
+                        .font(BFont.caption(12))
+                        .foregroundColor(.successGreen)
+                }
+
+                Spacer()
+
+                BloodTypeBadge(bloodType: request.bloodTypeNeeded, size: .small)
+            }
+
+            // Patient info
+            HStack(spacing: BSpacing.lg) {
+                Label(request.patientName, systemImage: "person.fill")
+                    .font(BFont.caption(12))
+                    .foregroundColor(.textSecondary)
+
+                Label(request.ward, systemImage: "building.2.fill")
+                    .font(BFont.caption(12))
+                    .foregroundColor(.textSecondary)
+
+                Spacer()
+
+                Text("\(request.unitsNeeded) unit\(request.unitsNeeded > 1 ? "s" : "")")
+                    .font(BFont.captionBold(12))
+                    .foregroundColor(.textPrimary)
+            }
+
+            // Complete Transfusion button
+            Button {
+                completingRequestId = request.id
+                // Small delay for visual feedback
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    withAnimation(.spring(response: 0.4)) {
+                        viewModel.completeTransfusion(request)
+                        completingRequestId = nil
+                    }
+                }
+            } label: {
+                HStack {
+                    if completingRequestId == request.id {
+                        ProgressView()
+                            .tint(.white)
+                    } else {
+                        Image(systemName: "checkmark.seal.fill")
+                        Text("Complete Transfusion")
+                    }
+                }
+                .font(BFont.headline(14))
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 44)
+                .background(
+                    RoundedRectangle(cornerRadius: BRadius.md)
+                        .fill(Color.successGreen)
+                )
+            }
+            .disabled(completingRequestId == request.id)
+        }
+        .padding(BSpacing.lg)
+        .background(
+            RoundedRectangle(cornerRadius: BRadius.lg)
+                .fill(Color.surfaceDark)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: BRadius.lg)
+                .stroke(Color.successGreen.opacity(0.3), lineWidth: 1)
+        )
     }
 
     // MARK: - Active Requests
