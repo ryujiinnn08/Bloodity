@@ -7,6 +7,7 @@ struct UserDashboard: View {
     @State private var selectedMode: DashboardMode = .donor
     @State private var showRequestDetail: BloodRequest?
     @State private var showNewRequest = false
+    @State private var navigatingRequest: BloodRequest?
 
     enum DashboardMode: String, CaseIterable {
         case donor = "Donor"
@@ -49,6 +50,9 @@ struct UserDashboard: View {
                     onAccept: {
                         donorVM.acceptRequest(request)
                         showRequestDetail = nil
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            navigatingRequest = request
+                        }
                     },
                     onDecline: {
                         donorVM.declineRequest(request)
@@ -58,6 +62,15 @@ struct UserDashboard: View {
             }
             .sheet(isPresented: $showNewRequest) {
                 NewRequestView(viewModel: requesterVM, isPresented: $showNewRequest)
+            }
+            .navigationDestination(item: $navigatingRequest) { request in
+                DonorNavigationView(
+                    request: request,
+                    donor: donorVM.currentUser,
+                    onComplete: {
+                        navigatingRequest = nil
+                    }
+                )
             }
         }
     }
