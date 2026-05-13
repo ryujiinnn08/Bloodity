@@ -5,6 +5,16 @@ struct MainTabView: View {
     let authVM: AuthViewModel
     var store = DataStore.shared
 
+    @State private var donorVM: DonorViewModel
+    @State private var requesterVM: RequesterViewModel
+
+    init(user: User, authVM: AuthViewModel) {
+        self.user = user
+        self.authVM = authVM
+        _donorVM = State(initialValue: DonorViewModel(user: user))
+        _requesterVM = State(initialValue: RequesterViewModel(user: user))
+    }
+
     var body: some View {
         Group {
             switch user.role {
@@ -18,9 +28,7 @@ struct MainTabView: View {
 
     // MARK: - User Tabs (Donor + Recipient combined)
     private var userTabs: some View {
-        let donorVM = DonorViewModel(user: user)
-        let requesterVM = RequesterViewModel(user: user)
-        return TabView {
+        TabView {
             UserDashboard(donorVM: donorVM, requesterVM: requesterVM)
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
