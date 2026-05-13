@@ -42,7 +42,12 @@ struct MainTabView: View {
             .badge(store.unreadDonorNotificationCount)
 
             NavigationStack {
-                ProfileView(user: user, onLogout: { authVM.logout() })
+                ProfileView(user: donorVM.currentUser, onLogout: { authVM.logout() }, onReset: {
+                    DataStore.shared.resetForDemo()
+                    donorVM.currentUser.lastDonationDate = nil
+                    donorVM.currentUser.totalDonations = 3
+                    donorVM.isAvailable = true
+                })
             }
             .tabItem {
                 Label("Profile", systemImage: "person.fill")

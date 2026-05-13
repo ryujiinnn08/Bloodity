@@ -83,10 +83,10 @@ class DataStore {
             )
             hospitalNotifications.insert(notif, at: 0)
 
-            // Phase 1: Real-time blood stock sync — decrement units
+            // Phase 1: Real-time blood stock sync — donor adds units to hospital
             if let stockIndex = bloodStocks.firstIndex(where: { $0.bloodType == request.bloodTypeNeeded }) {
                 withAnimation(.spring(response: 0.4)) {
-                    bloodStocks[stockIndex].unitsAvailable = max(0, bloodStocks[stockIndex].unitsAvailable - request.unitsNeeded)
+                    bloodStocks[stockIndex].unitsAvailable += request.unitsNeeded
                     bloodStocks[stockIndex].lastUpdated = Date()
                 }
             }
@@ -196,6 +196,20 @@ class DataStore {
     func rejectHospital(_ hospitalId: UUID) {
         withAnimation(.spring(response: 0.4)) {
             hospitals.removeAll { $0.id == hospitalId }
+        }
+    }
+
+    // MARK: - Demo Reset
+
+    func resetForDemo() {
+        withAnimation(.spring(response: 0.4)) {
+            bloodRequests = MockData.bloodRequests
+            donors = MockData.donors
+            donations = MockData.donations
+            bloodStocks = MockData.bloodStocks
+            donorNotifications = MockData.donorNotifications
+            hospitalNotifications = MockData.hospitalNotifications
+            hospitals = MockData.hospitals
         }
     }
 }

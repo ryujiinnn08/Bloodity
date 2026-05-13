@@ -3,6 +3,8 @@ import SwiftUI
 struct ProfileView: View {
     let user: User
     var onLogout: () -> Void
+    var onReset: (() -> Void)? = nil
+    @State private var showResetConfirm = false
 
     var body: some View {
         ZStack {
@@ -87,12 +89,42 @@ struct ProfileView: View {
     }
 
     private var logoutButton: some View {
-        Button(action: onLogout) {
-            HStack {
-                Image(systemName: "rectangle.portrait.and.arrow.right")
-                Text("Sign Out")
+        VStack(spacing: BSpacing.md) {
+            // Reset Demo button
+            if onReset != nil {
+                Button {
+                    showResetConfirm = true
+                } label: {
+                    HStack {
+                        Image(systemName: "arrow.counterclockwise.circle.fill")
+                        Text("Reset Demo")
+                    }
+                    .font(BFont.headline())
+                    .foregroundColor(.warmAmber)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 48)
+                    .background(
+                        RoundedRectangle(cornerRadius: BRadius.md)
+                            .stroke(Color.warmAmber, lineWidth: 1.5)
+                    )
+                }
+                .alert("Reset Demo Data?", isPresented: $showResetConfirm) {
+                    Button("Cancel", role: .cancel) { }
+                    Button("Reset", role: .destructive) {
+                        onReset?()
+                    }
+                } message: {
+                    Text("This will reset all data to its original state: blood stock, requests, donations, and your eligibility. Use this to re-demo the app.")
+                }
             }
-        }.buttonStyle(SecondaryButtonStyle())
+
+            Button(action: onLogout) {
+                HStack {
+                    Image(systemName: "rectangle.portrait.and.arrow.right")
+                    Text("Sign Out")
+                }
+            }.buttonStyle(SecondaryButtonStyle())
+        }
     }
 
     private func infoRow(icon: String, label: String, value: String) -> some View {
