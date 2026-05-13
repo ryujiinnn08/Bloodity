@@ -10,6 +10,8 @@ struct Hospital: Identifiable, Codable {
     var contactNumber: String
     var isPartner: Bool
     var isVerified: Bool = true
+    var licenseNumber: String = ""
+    var partnershipSignedDate: Date? = nil
 
     func distance(fromLat lat: Double, fromLon lon: Double) -> Double {
         let earthRadius = 6371.0

@@ -19,6 +19,8 @@ class AuthViewModel {
     var regBloodType: BloodType = .oPositive
     var regRole: UserRole = .user
     var regAddress = ""
+    var regLicenseNumber = ""
+    var regPartnershipSigned = false
 
     // Demo accounts
     let demoAccounts: [(label: String, phone: String, user: User)] = [
@@ -101,6 +103,22 @@ class AuthViewModel {
             // Add to DataStore so the account is live
             if self.regRole == .user {
                 DataStore.shared.donors.append(newUser)
+            } else if self.regRole == .hospital {
+                // Register hospital with legal compliance data
+                let newHospital = Hospital(
+                    id: UUID(),
+                    name: self.regName,
+                    shortName: String(self.regName.prefix(4)).uppercased(),
+                    address: self.regAddress,
+                    latitude: 14.5995,
+                    longitude: 120.9842,
+                    contactNumber: self.regPhone,
+                    isPartner: false,
+                    isVerified: false,
+                    licenseNumber: self.regLicenseNumber,
+                    partnershipSignedDate: self.regPartnershipSigned ? Date() : nil
+                )
+                DataStore.shared.hospitals.append(newHospital)
             }
 
             self.isAuthenticated = true

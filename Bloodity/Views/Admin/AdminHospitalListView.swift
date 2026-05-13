@@ -107,10 +107,22 @@ struct AdminHospitalListView: View {
             }
 
             // Info row
-            HStack(spacing: BSpacing.lg) {
+            VStack(alignment: .leading, spacing: 4) {
                 Label(hospital.contactNumber, systemImage: "phone.fill")
                     .font(BFont.caption(11))
                     .foregroundColor(.textSecondary)
+
+                if !hospital.licenseNumber.isEmpty {
+                    Label(hospital.licenseNumber, systemImage: "doc.text.fill")
+                        .font(BFont.caption(11))
+                        .foregroundColor(.textSecondary)
+                }
+
+                if let signedDate = hospital.partnershipSignedDate {
+                    Label("Partnership signed \(signedDate, format: .dateTime.month(.abbreviated).day().year())", systemImage: "signature")
+                        .font(BFont.caption(11))
+                        .foregroundColor(.successGreen.opacity(0.8))
+                }
             }
 
             // Status + Actions
