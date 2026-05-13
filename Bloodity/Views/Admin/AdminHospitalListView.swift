@@ -68,7 +68,12 @@ struct AdminHospitalListView: View {
                         .frame(maxWidth: .infinity)
                     } else {
                         ForEach(filteredHospitals) { hospital in
-                            hospitalCard(hospital)
+                            NavigationLink {
+                                AdminHospitalDetailView(hospital: hospital)
+                            } label: {
+                                hospitalCard(hospital)
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                 }

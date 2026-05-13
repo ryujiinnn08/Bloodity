@@ -153,79 +153,76 @@ struct AdminDashboard: View {
     }
 
     private func pendingHospitalCard(_ hospital: Hospital) -> some View {
-        VStack(alignment: .leading, spacing: BSpacing.md) {
-            HStack {
-                ZStack {
-                    Circle()
-                        .fill(Color.warmAmber.opacity(0.15))
-                        .frame(width: 40, height: 40)
-                    Image(systemName: "building.2.fill")
-                        .font(.system(size: 16))
+        NavigationLink {
+            AdminHospitalDetailView(hospital: hospital)
+        } label: {
+            VStack(alignment: .leading, spacing: BSpacing.md) {
+                HStack {
+                    ZStack {
+                        Circle()
+                            .fill(Color.warmAmber.opacity(0.15))
+                            .frame(width: 40, height: 40)
+                        Image(systemName: "building.2.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(.warmAmber)
+                    }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(hospital.name)
+                            .font(BFont.headline(15))
+                            .foregroundColor(.textPrimary)
+                        Text(hospital.address)
+                            .font(BFont.caption(12))
+                            .foregroundColor(.textSecondary)
+                    }
+
+                    Spacer()
+
+                    Text("Pending")
+                        .font(BFont.caption(11))
                         .foregroundColor(.warmAmber)
-                }
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(hospital.name)
-                        .font(BFont.headline(15))
-                        .foregroundColor(.textPrimary)
-                    Text(hospital.address)
-                        .font(BFont.caption(12))
-                        .foregroundColor(.textSecondary)
-                }
-
-                Spacer()
-
-                Text("Pending")
-                    .font(BFont.caption(11))
-                    .foregroundColor(.warmAmber)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 3)
-                    .background(
-                        Capsule()
-                            .fill(Color.warmAmber.opacity(0.12))
-                    )
-            }
-
-            HStack(spacing: BSpacing.md) {
-                Button {
-                    store.rejectHospital(hospital.id)
-                } label: {
-                    Text("Reject")
-                        .font(BFont.captionBold())
-                        .foregroundColor(.bloodRed)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 36)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
                         .background(
-                            RoundedRectangle(cornerRadius: BRadius.sm)
-                                .stroke(Color.bloodRed.opacity(0.4), lineWidth: 1)
+                            Capsule()
+                                .fill(Color.warmAmber.opacity(0.12))
                         )
                 }
 
-                Button {
-                    store.verifyHospital(hospital.id)
-                } label: {
-                    Text("Verify")
-                        .font(BFont.captionBold())
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 36)
-                        .background(
-                            RoundedRectangle(cornerRadius: BRadius.sm)
-                                .fill(Color.successGreen)
-                        )
+                // License info
+                if !hospital.licenseNumber.isEmpty {
+                    HStack(spacing: 6) {
+                        Image(systemName: "doc.text.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(.textSecondary)
+                        Text(hospital.licenseNumber)
+                            .font(BFont.caption(11))
+                            .foregroundColor(.textSecondary)
+                    }
+                }
+
+                HStack {
+                    Text("Review details")
+                        .font(BFont.captionBold(12))
+                        .foregroundColor(.warmAmber)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(.warmAmber.opacity(0.6))
+                    Spacer()
                 }
             }
+            .padding(BSpacing.lg)
+            .background(
+                RoundedRectangle(cornerRadius: BRadius.lg)
+                    .fill(Color.white)
+                    .shadow(color: .warmAmber.opacity(0.1), radius: 6, x: 0, y: 2)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: BRadius.lg)
+                    .stroke(Color.warmAmber.opacity(0.25), lineWidth: 1)
+            )
         }
-        .padding(BSpacing.lg)
-        .background(
-            RoundedRectangle(cornerRadius: BRadius.lg)
-                .fill(Color.white)
-                .shadow(color: .warmAmber.opacity(0.1), radius: 6, x: 0, y: 2)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: BRadius.lg)
-                .stroke(Color.warmAmber.opacity(0.25), lineWidth: 1)
-        )
+        .buttonStyle(.plain)
     }
 
     // MARK: - Active Requests
