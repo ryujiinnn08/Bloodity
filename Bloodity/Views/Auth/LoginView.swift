@@ -84,6 +84,57 @@ struct LoginView: View {
                             .offset(y: appearAnimation ? 0 : 20)
                             .animation(.spring(response: 0.6).delay(Double(index) * 0.1 + 0.3), value: appearAnimation)
                         }
+
+                        // Demo Admin — distinct gold/amber card
+                        Button {
+                            authVM.loginWithDemoAccount(AuthViewModel.adminAccount)
+                        } label: {
+                            HStack(spacing: BSpacing.md) {
+                                ZStack {
+                                    Circle()
+                                        .fill(
+                                            LinearGradient(
+                                                colors: [Color.warmAmber, Color(red: 0.85, green: 0.55, blue: 0.05)],
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                        )
+                                        .frame(width: 44, height: 44)
+                                    Image(systemName: "shield.checkered")
+                                        .font(.system(size: 18))
+                                        .foregroundColor(.white)
+                                }
+
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Demo Admin")
+                                        .font(BFont.headline(15))
+                                        .foregroundColor(.textPrimary)
+
+                                    Text("Full System Access • Dashboard & AI")
+                                        .font(BFont.caption())
+                                        .foregroundColor(.warmAmber)
+                                }
+
+                                Spacer()
+
+                                Image(systemName: "arrow.right.circle.fill")
+                                    .font(.system(size: 22))
+                                    .foregroundColor(.warmAmber)
+                            }
+                            .padding(BSpacing.lg)
+                            .background(
+                                RoundedRectangle(cornerRadius: BRadius.lg)
+                                    .fill(Color.white)
+                                    .shadow(color: .warmAmber.opacity(0.15), radius: 8, x: 0, y: 2)
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: BRadius.lg)
+                                    .stroke(Color.warmAmber.opacity(0.3), lineWidth: 1)
+                            )
+                        }
+                        .opacity(appearAnimation ? 1 : 0)
+                        .offset(y: appearAnimation ? 0 : 20)
+                        .animation(.spring(response: 0.6).delay(0.5), value: appearAnimation)
                     }
                     .padding(.horizontal)
 

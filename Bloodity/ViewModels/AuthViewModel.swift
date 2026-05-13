@@ -26,6 +26,22 @@ class AuthViewModel {
         ("Hospital — Dr. Elena Reyes", "+63 919 555 0123", MockData.hospitalAccount),
     ]
 
+    // Admin demo account (hospital role, admin presentation)
+    static let adminAccount = User(
+        id: UUID(uuidString: "AA000001-0000-0000-0000-000000000001")!,
+        name: "Admin Panel",
+        phone: "+63 900 000 0000",
+        bloodType: .oPositive,
+        role: .hospital,
+        latitude: 14.5764,
+        longitude: 120.9842,
+        isAvailable: true,
+        lastDonationDate: nil,
+        registrationDate: Calendar.current.date(byAdding: .year, value: -2, to: Date())!,
+        totalDonations: 0,
+        profileImageName: nil
+    )
+
     func sendOTP() {
         isVerifying = true
 
