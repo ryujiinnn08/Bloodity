@@ -18,6 +18,7 @@ class AuthViewModel {
     var regPhone = ""
     var regBloodType: BloodType = .oPositive
     var regRole: UserRole = .user
+    var regAddress = ""
 
     // Demo accounts
     let demoAccounts: [(label: String, phone: String, user: User)] = [
@@ -69,17 +70,23 @@ class AuthViewModel {
                 id: UUID(),
                 name: self.regName,
                 phone: self.regPhone,
-                bloodType: self.regBloodType,
+                bloodType: self.regRole == .hospital ? .oPositive : self.regBloodType,
                 role: self.regRole,
                 latitude: 14.5995,
                 longitude: 120.9842,
-                isAvailable: true,
+                isAvailable: self.regRole == .user,
                 lastDonationDate: nil,
                 registrationDate: Date(),
                 totalDonations: 0,
                 profileImageName: nil
             )
             self.currentUser = newUser
+
+            // Add to DataStore so the account is live
+            if self.regRole == .user {
+                DataStore.shared.donors.append(newUser)
+            }
+
             self.isAuthenticated = true
             self.isVerifying = false
         }
