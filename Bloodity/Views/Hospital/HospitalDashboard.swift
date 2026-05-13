@@ -183,10 +183,10 @@ struct HospitalDashboard: View {
                 }
 
                 quickActionCard(
-                    title: "Fallback",
+                    title: "Sourcing",
                     icon: "arrow.triangle.branch",
                     color: .warmAmber,
-                    count: "\(MockData.hospitals.count) nearby"
+                    count: "\(MockData.hospitals.filter { $0.isPartner }.count) partners"
                 ) {
                     showSmartFallback = true
                 }

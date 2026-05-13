@@ -82,6 +82,22 @@ class DataStore {
                 relatedRequestId: request.id
             )
             hospitalNotifications.insert(notif, at: 0)
+
+            // Phase 1: Real-time blood stock sync — decrement units
+            if let stockIndex = bloodStocks.firstIndex(where: { $0.bloodType == request.bloodTypeNeeded }) {
+                withAnimation(.spring(response: 0.4)) {
+                    bloodStocks[stockIndex].unitsAvailable = max(0, bloodStocks[stockIndex].unitsAvailable - request.unitsNeeded)
+                    bloodStocks[stockIndex].lastUpdated = Date()
+                }
+            }
+
+            // Auto-fulfill after simulated transfusion delay
+            let reqId = request.id
+            let donId = donorId
+            DispatchQueue.main.asyncAfter(deadline: .now() + 8) { [weak self] in
+                self?.updateRequestStatus(reqId, status: .fulfilled, donorId: donId)
+            }
+
         case .fulfilled:
             let notif = AppNotification(
                 id: UUID(),

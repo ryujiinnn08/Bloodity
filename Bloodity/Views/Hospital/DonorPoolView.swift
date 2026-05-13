@@ -3,7 +3,8 @@ import SwiftUI
 struct DonorPoolView: View {
     @Bindable var viewModel: HospitalViewModel
     @State private var searchText = ""
-    @State private var notifiedDonorId: UUID?
+    @State private var requestedDonorId: UUID?
+    @State private var expandedDonorId: UUID?
 
     var displayedDonors: [User] {
         let donors = viewModel.filteredDonors
@@ -25,6 +26,18 @@ struct DonorPoolView: View {
 
                     // Stats
                     donorStats
+
+                    // Hint
+                    if expandedDonorId == nil {
+                        HStack(spacing: 6) {
+                            Image(systemName: "hand.tap.fill")
+                                .font(.system(size: 11))
+                            Text("Tap a donor to view full details")
+                                .font(BFont.caption(12))
+                        }
+                        .foregroundColor(.textSecondary.opacity(0.6))
+                        .transition(.opacity)
+                    }
 
                     // Donor List
                     donorList
@@ -155,33 +168,44 @@ struct DonorPoolView: View {
                     donor: donor,
                     hospitalLat: viewModel.hospital.latitude,
                     hospitalLon: viewModel.hospital.longitude,
-                    onNotify: {
+                    isExpanded: Binding(
+                        get: { expandedDonorId == donor.id },
+                        set: { newValue in
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                expandedDonorId = newValue ? donor.id : nil
+                            }
+                        }
+                    ),
+                    onRequestDonation: {
                         withAnimation(.spring(response: 0.3)) {
-                            notifiedDonorId = donor.id
+                            requestedDonorId = donor.id
                         }
 
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             withAnimation {
-                                notifiedDonorId = nil
+                                requestedDonorId = nil
                             }
                         }
                     }
                 )
                 .overlay(
                     Group {
-                        if notifiedDonorId == donor.id {
+                        if requestedDonorId == donor.id {
                             RoundedRectangle(cornerRadius: BRadius.lg)
-                                .fill(Color.successGreen.opacity(0.1))
+                                .fill(Color.white.opacity(0.95))
                                 .overlay(
-                                    HStack {
-                                        Spacer()
+                                    VStack(spacing: 8) {
                                         Image(systemName: "checkmark.circle.fill")
+                                            .font(.system(size: 32))
                                             .foregroundColor(.successGreen)
-                                        Text("Notified")
-                                            .font(BFont.captionBold())
+                                        Text("Request Sent")
+                                            .font(BFont.headline())
                                             .foregroundColor(.successGreen)
-                                        Spacer()
                                     }
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: BRadius.lg)
+                                        .stroke(Color.successGreen.opacity(0.3), lineWidth: 1.5)
                                 )
                         }
                     }
@@ -196,3 +220,4 @@ struct DonorPoolView: View {
         DonorPoolView(viewModel: HospitalViewModel(user: MockData.hospitalAccount))
     }
 }
+

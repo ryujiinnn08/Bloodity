@@ -1,6 +1,8 @@
 import Foundation
 
-struct BloodRequest: Identifiable, Codable {
+struct BloodRequest: Identifiable, Codable, Hashable {
+    static func == (lhs: BloodRequest, rhs: BloodRequest) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
     let id: UUID
     var patientName: String
     var bloodTypeNeeded: BloodType

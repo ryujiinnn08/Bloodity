@@ -4,6 +4,7 @@ struct DonorDashboard: View {
     @Bindable var viewModel: DonorViewModel
 
     @State private var showRequestDetail: BloodRequest?
+    @State private var navigatingRequest: BloodRequest?
 
     var body: some View {
         NavigationStack {
@@ -49,10 +50,23 @@ struct DonorDashboard: View {
                     onAccept: {
                         viewModel.acceptRequest(request)
                         showRequestDetail = nil
+                        // Push navigation view after a brief delay for sheet dismiss
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                            navigatingRequest = request
+                        }
                     },
                     onDecline: {
                         viewModel.declineRequest(request)
                         showRequestDetail = nil
+                    }
+                )
+            }
+            .navigationDestination(item: $navigatingRequest) { request in
+                DonorNavigationView(
+                    request: request,
+                    donor: viewModel.currentUser,
+                    onComplete: {
+                        navigatingRequest = nil
                     }
                 )
             }
