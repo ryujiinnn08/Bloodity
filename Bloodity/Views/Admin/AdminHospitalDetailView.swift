@@ -264,6 +264,13 @@ struct AdminHospitalDetailView: View {
     }
 
     // MARK: - Action Buttons
+    private var isCompliant: Bool {
+        !hospital.licenseNumber.isEmpty
+        && hospital.partnershipSignedDate != nil
+        && !hospital.contactNumber.isEmpty
+        && !hospital.address.isEmpty
+    }
+
     private var actionButtons: some View {
         VStack(spacing: BSpacing.md) {
             // Summary assessment
@@ -294,6 +301,37 @@ struct AdminHospitalDetailView: View {
             }
             .padding(BSpacing.lg)
             .glassCard()
+
+            // Warning if not compliant
+            if !isCompliant {
+                HStack(spacing: BSpacing.sm) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 16))
+                        .foregroundColor(.bloodRed)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Incomplete Compliance")
+                            .font(BFont.captionBold(13))
+                            .foregroundColor(.bloodRed)
+
+                        let missing = missingItems
+                        Text("Missing: \(missing.joined(separator: ", "))")
+                            .font(BFont.caption(12))
+                            .foregroundColor(.textSecondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(BSpacing.md)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    RoundedRectangle(cornerRadius: BRadius.md)
+                        .fill(Color.bloodRed.opacity(0.08))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: BRadius.md)
+                                .stroke(Color.bloodRed.opacity(0.2), lineWidth: 1)
+                        )
+                )
+            }
 
             HStack(spacing: BSpacing.md) {
                 Button {
@@ -330,11 +368,21 @@ struct AdminHospitalDetailView: View {
                     .frame(height: 50)
                     .background(
                         RoundedRectangle(cornerRadius: BRadius.md)
-                            .fill(Color.successGreen)
+                            .fill(isCompliant ? Color.successGreen : Color.textSecondary.opacity(0.3))
                     )
                 }
+                .disabled(!isCompliant)
             }
         }
+    }
+
+    private var missingItems: [String] {
+        var items: [String] = []
+        if hospital.licenseNumber.isEmpty { items.append("DOH License") }
+        if hospital.partnershipSignedDate == nil { items.append("Partnership Agreement") }
+        if hospital.contactNumber.isEmpty { items.append("Contact Number") }
+        if hospital.address.isEmpty { items.append("Address") }
+        return items
     }
 
     private func assessmentBadge(label: String, passed: Bool) -> some View {
