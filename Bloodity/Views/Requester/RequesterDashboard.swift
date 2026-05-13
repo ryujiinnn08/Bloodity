@@ -10,7 +10,7 @@ struct RequesterDashboard: View {
             ZStack {
                 Color.deepNavy.ignoresSafeArea()
 
-                ScrollView(.vertical, showsIndicators: false) {
+                ScrollView(.vertical) {
                     VStack(spacing: BSpacing.xl) {
                         // Header
                         headerSection
@@ -163,5 +163,5 @@ struct RequesterDashboard: View {
 }
 
 #Preview {
-    RequesterDashboard(viewModel: RequesterViewModel(user: MockData.requesterAccount))
+    RequesterDashboard(viewModel: RequesterViewModel(user: MockData.userAccount))
 }

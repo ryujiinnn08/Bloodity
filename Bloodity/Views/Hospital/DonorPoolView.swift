@@ -15,7 +15,7 @@ struct DonorPoolView: View {
         ZStack {
             Color.deepNavy.ignoresSafeArea()
 
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 VStack(spacing: BSpacing.lg) {
                     // Search Bar
                     searchBar
@@ -67,7 +67,7 @@ struct DonorPoolView: View {
 
     // MARK: - Blood Type Filter
     private var bloodTypeFilter: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        ScrollView(.horizontal) {
             HStack(spacing: BSpacing.sm) {
                 filterChip(label: "All", isSelected: viewModel.selectedBloodTypeFilter == nil) {
                     withAnimation(.spring(response: 0.3)) {
@@ -91,7 +91,9 @@ struct DonorPoolView: View {
     }
 
     private func filterChip(label: String, isSelected: Bool, color: Color = .healBlue, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
+        let bgGradient: AnyGradient = isSelected ? color.gradient : Color.cardDark.gradient
+        let borderColor: Color = isSelected ? .clear : .white.opacity(0.08)
+        return Button(action: action) {
             Text(label)
                 .font(BFont.captionBold())
                 .foregroundColor(isSelected ? .white : .textSecondary)
@@ -99,11 +101,11 @@ struct DonorPoolView: View {
                 .padding(.vertical, 8)
                 .background(
                     Capsule()
-                        .fill(isSelected ? color.gradient : Color.cardDark.gradient)
+                        .fill(bgGradient)
                 )
                 .overlay(
                     Capsule()
-                        .stroke(isSelected ? Color.clear : Color.white.opacity(0.08), lineWidth: 1)
+                        .stroke(borderColor, lineWidth: 1)
                 )
         }
     }

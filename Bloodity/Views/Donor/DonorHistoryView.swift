@@ -8,7 +8,7 @@ struct DonorHistoryView: View {
         ZStack {
             Color.deepNavy.ignoresSafeArea()
 
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 VStack(spacing: BSpacing.xl) {
                     // Summary Card
                     summaryCard
@@ -205,7 +205,7 @@ struct DonorHistoryView: View {
     NavigationStack {
         DonorHistoryView(
             donations: MockData.donations,
-            user: MockData.donorAccount
+            user: MockData.userAccount
         )
     }
 }

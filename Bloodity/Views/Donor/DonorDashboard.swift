@@ -10,7 +10,7 @@ struct DonorDashboard: View {
             ZStack {
                 Color.deepNavy.ignoresSafeArea()
 
-                ScrollView(.vertical, showsIndicators: false) {
+                ScrollView(.vertical) {
                     VStack(spacing: BSpacing.xl) {
                         // Hero Section
                         heroSection
@@ -253,5 +253,5 @@ struct DonorDashboard: View {
 }
 
 #Preview {
-    DonorDashboard(viewModel: DonorViewModel(user: MockData.donorAccount))
+    DonorDashboard(viewModel: DonorViewModel(user: MockData.userAccount))
 }

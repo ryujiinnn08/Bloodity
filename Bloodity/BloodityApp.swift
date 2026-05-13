@@ -23,7 +23,7 @@ struct BloodityApp: App {
             }
             .animation(.easeInOut(duration: 0.4), value: authVM.isAuthenticated)
             .animation(.easeInOut(duration: 0.4), value: authVM.isShowingSplash)
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(.light)
         }
     }
 }

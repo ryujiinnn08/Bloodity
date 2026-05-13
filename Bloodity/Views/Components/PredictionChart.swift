@@ -160,7 +160,7 @@ struct PredictionChart: View {
 #Preview {
     ZStack {
         Color.deepNavy.ignoresSafeArea()
-        ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.vertical) {
             VStack(spacing: 12) {
                 PredictionChart(stock: MockData.bloodStocks[1])
                 PredictionChart(stock: MockData.bloodStocks[0])

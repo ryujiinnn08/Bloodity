@@ -9,7 +9,7 @@ struct LoginView: View {
         ZStack {
             Color.deepNavy.ignoresSafeArea()
 
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 VStack(spacing: BSpacing.xxl) {
                     // Header
                     VStack(spacing: BSpacing.md) {

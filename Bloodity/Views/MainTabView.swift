@@ -7,25 +7,25 @@ struct MainTabView: View {
     var body: some View {
         Group {
             switch user.role {
-            case .donor: donorTabs
-            case .requester: requesterTabs
+            case .user: userTabs
             case .hospital: hospitalTabs
             }
         }
         .tint(.bloodRed)
     }
 
-    // MARK: - Donor Tabs
-    private var donorTabs: some View {
-        let vm = DonorViewModel(user: user)
+    // MARK: - User Tabs (Donor + Recipient combined)
+    private var userTabs: some View {
+        let donorVM = DonorViewModel(user: user)
+        let requesterVM = RequesterViewModel(user: user)
         return TabView {
-            DonorDashboard(viewModel: vm)
+            UserDashboard(donorVM: donorVM, requesterVM: requesterVM)
                 .tabItem {
                     Label("Home", systemImage: "house.fill")
                 }
 
             NavigationStack {
-                DonorHistoryView(donations: vm.donationHistory, user: user)
+                DonorHistoryView(donations: donorVM.donationHistory, user: user)
             }
             .tabItem {
                 Label("History", systemImage: "clock.fill")
@@ -38,31 +38,6 @@ struct MainTabView: View {
                 Label("Alerts", systemImage: "bell.fill")
             }
             .badge(MockData.donorNotifications.filter { !$0.isRead }.count)
-
-            NavigationStack {
-                ProfileView(user: user, onLogout: { authVM.logout() })
-            }
-            .tabItem {
-                Label("Profile", systemImage: "person.fill")
-            }
-        }
-    }
-
-    // MARK: - Requester Tabs
-    private var requesterTabs: some View {
-        let vm = RequesterViewModel(user: user)
-        return TabView {
-            RequesterDashboard(viewModel: vm)
-                .tabItem {
-                    Label("Home", systemImage: "house.fill")
-                }
-
-            NavigationStack {
-                NotificationCenterView(notifications: MockData.donorNotifications)
-            }
-            .tabItem {
-                Label("Alerts", systemImage: "bell.fill")
-            }
 
             NavigationStack {
                 ProfileView(user: user, onLogout: { authVM.logout() })
@@ -116,5 +91,5 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView(user: MockData.donorAccount, authVM: AuthViewModel())
+    MainTabView(user: MockData.userAccount, authVM: AuthViewModel())
 }

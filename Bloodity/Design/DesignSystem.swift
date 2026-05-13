@@ -1,54 +1,56 @@
 import SwiftUI
 
-// MARK: - Color Palette
+// MARK: - Color Palette (Light Mode)
 extension Color {
-    // Primary
-    static let bloodRed = Color(red: 0.86, green: 0.15, blue: 0.15)       // #DC2626
-    static let bloodRedDark = Color(red: 0.60, green: 0.11, blue: 0.11)   // #991B1B
-    static let coralPink = Color(red: 0.98, green: 0.44, blue: 0.52)      // #FB7185
+    // Primary — #D32F2F
+    static let bloodRed = Color(red: 0.827, green: 0.184, blue: 0.184)
+    static let bloodRedDark = Color(red: 0.60, green: 0.11, blue: 0.11)
+    static let coralPink = Color(red: 0.91, green: 0.45, blue: 0.45)
 
-    // Urgency
-    static let warmAmber = Color(red: 0.96, green: 0.62, blue: 0.04)      // #F59E0B
-    static let healBlue = Color(red: 0.23, green: 0.51, blue: 0.96)       // #3B82F6
+    // Tertiary — #00799C (teal)
+    static let healBlue = Color(red: 0.0, green: 0.475, blue: 0.612)
+    static let warmAmber = Color(red: 0.96, green: 0.62, blue: 0.04)
 
-    // Backgrounds
-    static let deepNavy = Color(red: 0.06, green: 0.09, blue: 0.16)       // #0F172A
-    static let cardDark = Color(red: 0.12, green: 0.16, blue: 0.23)       // #1E293B
-    static let surfaceDark = Color(red: 0.20, green: 0.25, blue: 0.33)    // #334155
+    // Backgrounds (Light mode)
+    static let deepNavy = Color(red: 0.96, green: 0.96, blue: 0.97)      // Light gray bg
+    static let cardDark = Color.white                                       // White cards
+    static let surfaceDark = Color(red: 0.93, green: 0.93, blue: 0.94)    // Subtle gray
 
-    // Text
-    static let textPrimary = Color(red: 0.97, green: 0.98, blue: 0.99)    // #F8FAFC
-    static let textSecondary = Color(red: 0.58, green: 0.64, blue: 0.72)  // #94A3B8
+    // Text (Light mode)
+    static let textPrimary = Color(red: 0.12, green: 0.12, blue: 0.13)    // Near-black
+    static let textSecondary = Color(red: 0.537, green: 0.447, blue: 0.435) // #89726F neutral
 
     // Status
-    static let successGreen = Color(red: 0.06, green: 0.73, blue: 0.51)   // #10B981
-    static let warningOrange = Color(red: 0.96, green: 0.62, blue: 0.04)  // #F59E0B
+    static let successGreen = Color(red: 0.06, green: 0.73, blue: 0.51)
+    static let warningOrange = Color(red: 0.96, green: 0.62, blue: 0.04)
 
-    // Gradients
-    static let bloodGradientStart = Color(red: 0.86, green: 0.15, blue: 0.15)
-    static let bloodGradientEnd = Color(red: 0.98, green: 0.44, blue: 0.52)
+    // Header gradient
+    static let headerDark = Color(red: 0.35, green: 0.10, blue: 0.10)
+    static let headerMid = Color(red: 0.55, green: 0.15, blue: 0.15)
 }
 
 // MARK: - Gradient Presets
 extension LinearGradient {
     static let bloodGradient = LinearGradient(
-        colors: [.bloodRed, .coralPink],
+        colors: [.bloodRed, .bloodRedDark],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+
+    static let headerGradient = LinearGradient(
+        colors: [Color(red: 0.35, green: 0.08, blue: 0.08), .bloodRed],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
 
     static let darkCardGradient = LinearGradient(
-        colors: [.cardDark, .cardDark.opacity(0.8)],
+        colors: [.cardDark, .cardDark.opacity(0.95)],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
 
     static let heroGradient = LinearGradient(
-        colors: [
-            Color.bloodRed.opacity(0.6),
-            Color.coralPink.opacity(0.3),
-            Color.deepNavy
-        ],
+        colors: [.bloodRed, .coralPink.opacity(0.6)],
         startPoint: .topLeading,
         endPoint: .bottomTrailing
     )
@@ -114,15 +116,12 @@ struct GlassCard: ViewModifier {
         content
             .background(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(.ultraThinMaterial)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                            .fill(Color.cardDark.opacity(0.7))
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: cornerRadius)
-                            .stroke(Color.white.opacity(0.08), lineWidth: 1)
-                    )
+                    .fill(Color.white)
+                    .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: 2)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .stroke(Color.black.opacity(0.06), lineWidth: 1)
             )
     }
 }
@@ -135,10 +134,10 @@ struct PrimaryButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity)
             .frame(height: 52)
             .background(
-                LinearGradient.bloodGradient
+                RoundedRectangle(cornerRadius: BRadius.md)
+                    .fill(Color.bloodRed)
                     .opacity(configuration.isPressed ? 0.8 : 1.0)
             )
-            .cornerRadius(BRadius.md)
             .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
             .animation(.spring(response: 0.3), value: configuration.isPressed)
     }
@@ -163,7 +162,7 @@ struct SecondaryButtonStyle: ButtonStyle {
 struct CardShadow: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .shadow(color: .black.opacity(0.3), radius: 12, x: 0, y: 4)
+            .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 3)
     }
 }
 
@@ -265,22 +264,19 @@ enum RequestStatus: String, CaseIterable, Codable {
 }
 
 enum UserRole: String, CaseIterable, Codable {
-    case donor = "Donor"
-    case requester = "Requester"
+    case user = "User"
     case hospital = "Hospital"
 
     var icon: String {
         switch self {
-        case .donor: return "drop.fill"
-        case .requester: return "heart.fill"
+        case .user: return "person.fill"
         case .hospital: return "cross.case.fill"
         }
     }
 
     var color: Color {
         switch self {
-        case .donor: return .bloodRed
-        case .requester: return .coralPink
+        case .user: return .bloodRed
         case .hospital: return .healBlue
         }
     }

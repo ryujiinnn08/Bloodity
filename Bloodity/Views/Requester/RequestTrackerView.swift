@@ -16,7 +16,7 @@ struct RequestTrackerView: View {
             ZStack {
                 Color.deepNavy.ignoresSafeArea()
 
-                ScrollView(.vertical, showsIndicators: false) {
+                ScrollView(.vertical) {
                     VStack(spacing: BSpacing.xxl) {
                         // Request Summary
                         requestSummary

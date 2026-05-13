@@ -19,7 +19,7 @@ struct DonorRequestDetailView: View {
             ZStack {
                 Color.deepNavy.ignoresSafeArea()
 
-                ScrollView(.vertical, showsIndicators: false) {
+                ScrollView(.vertical) {
                     VStack(spacing: BSpacing.xxl) {
                         // Urgency Hero
                         urgencyHero
@@ -253,7 +253,7 @@ struct DonorRequestDetailView: View {
 #Preview {
     DonorRequestDetailView(
         request: MockData.bloodRequests[0],
-        donor: MockData.donorAccount,
+        donor: MockData.userAccount,
         onAccept: {},
         onDecline: {}
     )

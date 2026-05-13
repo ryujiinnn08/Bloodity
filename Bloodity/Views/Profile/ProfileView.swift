@@ -7,12 +7,12 @@ struct ProfileView: View {
     var body: some View {
         ZStack {
             Color.deepNavy.ignoresSafeArea()
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 VStack(spacing: BSpacing.xl) {
                     profileHeader
                     infoSection
                     statsSection
-                    if user.role == .donor { donorSection }
+                    if user.role == .user { donorSection }
                     aboutSection
                     logoutButton
                 }
@@ -116,4 +116,4 @@ struct ProfileView: View {
     }
 }
 
-#Preview { NavigationStack { ProfileView(user: MockData.donorAccount, onLogout: {}) } }
+#Preview { NavigationStack { ProfileView(user: MockData.userAccount, onLogout: {}) } }

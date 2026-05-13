@@ -7,19 +7,24 @@ struct NotificationCenterView: View {
     var body: some View {
         ZStack {
             Color.deepNavy.ignoresSafeArea()
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 VStack(spacing: BSpacing.sm) {
                     if notifications.isEmpty {
                         emptyState
                     } else {
                         ForEach(notifications) { notification in
                             notificationRow(notification)
-                                .onTapGesture { withAnimation { _ = readIds.insert(notification.id) } }
+                                .onTapGesture {
+                                    let _ = withAnimation {
+                                        readIds.insert(notification.id)
+                                    }
+                                }
                         }
                     }
                 }
                 .padding(.horizontal).padding(.bottom, 100)
             }
+            .scrollIndicators(.hidden)
         }
         .navigationTitle("Notifications")
         .navigationBarTitleDisplayMode(.large)

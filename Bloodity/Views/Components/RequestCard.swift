@@ -182,7 +182,7 @@ struct DonorCard: View {
 #Preview {
     ZStack {
         Color.deepNavy.ignoresSafeArea()
-        ScrollView(.vertical, showsIndicators: false) {
+        ScrollView(.vertical) {
             VStack(spacing: 12) {
                 RequestCard(
                     request: MockData.bloodRequests[0],

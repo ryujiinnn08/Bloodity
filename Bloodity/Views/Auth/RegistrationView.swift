@@ -9,7 +9,7 @@ struct RegistrationView: View {
             ZStack {
                 Color.deepNavy.ignoresSafeArea()
 
-                ScrollView(.vertical, showsIndicators: false) {
+                ScrollView(.vertical) {
                     VStack(spacing: BSpacing.xxl) {
                         // Header
                         VStack(spacing: BSpacing.sm) {
@@ -85,21 +85,21 @@ struct RegistrationView: View {
                                                 authVM.regBloodType = type
                                             }
                                         } label: {
+                                            let isSelected = authVM.regBloodType == type
+                                            let bgGradient: AnyGradient = isSelected ? type.color.gradient : Color.cardDark.gradient
+                                            let borderColor: Color = isSelected ? .clear : .white.opacity(0.08)
                                             Text(type.rawValue)
                                                 .font(BFont.headline(15))
-                                                .foregroundColor(authVM.regBloodType == type ? .white : .textSecondary)
+                                                .foregroundColor(isSelected ? .white : .textSecondary)
                                                 .frame(maxWidth: .infinity)
                                                 .frame(height: 44)
                                                 .background(
                                                     RoundedRectangle(cornerRadius: BRadius.sm)
-                                                        .fill(authVM.regBloodType == type ? type.color.gradient : Color.cardDark.gradient)
+                                                        .fill(bgGradient)
                                                 )
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: BRadius.sm)
-                                                        .stroke(
-                                                            authVM.regBloodType == type ? Color.clear : Color.white.opacity(0.08),
-                                                            lineWidth: 1
-                                                        )
+                                                        .stroke(borderColor, lineWidth: 1)
                                                 )
                                         }
                                     }
@@ -119,25 +119,25 @@ struct RegistrationView: View {
                                                 authVM.regRole = role
                                             }
                                         } label: {
+                                            let isSelected = authVM.regRole == role
+                                            let bgGradient: AnyGradient = isSelected ? role.color.gradient : Color.cardDark.gradient
+                                            let borderColor: Color = isSelected ? .clear : .white.opacity(0.08)
                                             VStack(spacing: 6) {
                                                 Image(systemName: role.icon)
                                                     .font(.system(size: 20))
                                                 Text(role.rawValue)
                                                     .font(BFont.captionBold())
                                             }
-                                            .foregroundColor(authVM.regRole == role ? .white : .textSecondary)
+                                            .foregroundColor(isSelected ? .white : .textSecondary)
                                             .frame(maxWidth: .infinity)
                                             .frame(height: 70)
                                             .background(
                                                 RoundedRectangle(cornerRadius: BRadius.md)
-                                                    .fill(authVM.regRole == role ? role.color.gradient : Color.cardDark.gradient)
+                                                    .fill(bgGradient)
                                             )
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: BRadius.md)
-                                                    .stroke(
-                                                        authVM.regRole == role ? Color.clear : Color.white.opacity(0.08),
-                                                        lineWidth: 1
-                                                    )
+                                                    .stroke(borderColor, lineWidth: 1)
                                             )
                                         }
                                     }

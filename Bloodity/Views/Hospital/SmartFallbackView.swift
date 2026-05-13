@@ -8,7 +8,7 @@ struct SmartFallbackView: View {
     var body: some View {
         ZStack {
             Color.deepNavy.ignoresSafeArea()
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 VStack(spacing: BSpacing.xl) {
                     fallbackHeader
                     radiusControl

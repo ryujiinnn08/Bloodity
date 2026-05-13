@@ -17,12 +17,11 @@ class AuthViewModel {
     var regName = ""
     var regPhone = ""
     var regBloodType: BloodType = .oPositive
-    var regRole: UserRole = .donor
+    var regRole: UserRole = .user
 
     // Demo accounts
     let demoAccounts: [(label: String, phone: String, user: User)] = [
-        ("Donor — Juan Dela Cruz", "+63 917 123 4567", MockData.donorAccount),
-        ("Requester — Maria Santos", "+63 918 987 6543", MockData.requesterAccount),
+        ("User — Juan Dela Cruz", "+63 917 123 4567", MockData.userAccount),
         ("Hospital — Dr. Elena Reyes", "+63 919 555 0123", MockData.hospitalAccount),
     ]
 
@@ -47,7 +46,7 @@ class AuthViewModel {
                 self.isAuthenticated = true
             } else {
                 // Any OTP works for demo
-                self.currentUser = MockData.donorAccount
+                self.currentUser = MockData.userAccount
                 self.isAuthenticated = true
             }
             self.isVerifying = false

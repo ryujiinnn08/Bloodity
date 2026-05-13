@@ -9,7 +9,7 @@ struct NewRequestView: View {
             ZStack {
                 Color.deepNavy.ignoresSafeArea()
 
-                ScrollView(.vertical, showsIndicators: false) {
+                ScrollView(.vertical) {
                     VStack(spacing: BSpacing.xxl) {
                         // Header
                         VStack(spacing: BSpacing.sm) {
@@ -48,14 +48,16 @@ struct NewRequestView: View {
                                                 viewModel.newBloodType = type
                                             }
                                         } label: {
+                                            let isSelected = viewModel.newBloodType == type
+                                            let bgGradient: AnyGradient = isSelected ? type.color.gradient : Color.cardDark.gradient
                                             Text(type.rawValue)
                                                 .font(BFont.headline(15))
-                                                .foregroundColor(viewModel.newBloodType == type ? .white : .textSecondary)
+                                                .foregroundColor(isSelected ? .white : .textSecondary)
                                                 .frame(maxWidth: .infinity)
                                                 .frame(height: 44)
                                                 .background(
                                                     RoundedRectangle(cornerRadius: BRadius.sm)
-                                                        .fill(viewModel.newBloodType == type ? type.color.gradient : Color.cardDark.gradient)
+                                                        .fill(bgGradient)
                                                 )
                                         }
                                     }
@@ -75,18 +77,20 @@ struct NewRequestView: View {
                                                 viewModel.newUrgency = level
                                             }
                                         } label: {
+                                            let isSelected = viewModel.newUrgency == level
+                                            let bgGradient: AnyGradient = isSelected ? level.color.gradient : Color.cardDark.gradient
                                             VStack(spacing: 4) {
                                                 Image(systemName: level.icon)
                                                     .font(.system(size: 18))
                                                 Text(level.rawValue)
                                                     .font(BFont.captionBold())
                                             }
-                                            .foregroundColor(viewModel.newUrgency == level ? .white : .textSecondary)
+                                            .foregroundColor(isSelected ? .white : .textSecondary)
                                             .frame(maxWidth: .infinity)
                                             .frame(height: 60)
                                             .background(
                                                 RoundedRectangle(cornerRadius: BRadius.md)
-                                                    .fill(viewModel.newUrgency == level ? level.color.gradient : Color.cardDark.gradient)
+                                                    .fill(bgGradient)
                                             )
                                         }
                                     }
@@ -258,7 +262,7 @@ struct NewRequestView: View {
 
 #Preview {
     NewRequestView(
-        viewModel: RequesterViewModel(user: MockData.requesterAccount),
+        viewModel: RequesterViewModel(user: MockData.userAccount),
         isPresented: .constant(true)
     )
 }
