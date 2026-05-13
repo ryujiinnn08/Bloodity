@@ -13,18 +13,16 @@ struct LoginView: View {
                 VStack(spacing: BSpacing.xxl) {
                     // Header
                     VStack(spacing: BSpacing.md) {
-                        BloodDropLogo(size: 70)
+                        Image("BLOODITY-LOGO")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 70, height: 70)
                             .padding(.top, 40)
 
-                        Text("Bloodity")
-                            .font(BFont.display(34))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.white, .coralPink],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
+                        Image("BLOODITY")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 32)
 
                         Text("Sign in to save lives")
                             .font(BFont.body())

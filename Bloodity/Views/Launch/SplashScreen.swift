@@ -29,20 +29,18 @@ struct SplashScreen: View {
                 Spacer()
 
                 // Logo
-                BloodDropLogo(size: 100)
+                Image("BLOODITY-LOGO")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
                     .scaleEffect(logoScale)
                     .opacity(logoOpacity)
 
                 // App Name
-                Text("Bloodity")
-                    .font(.system(size: 42, weight: .bold, design: .rounded))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.white, .coralPink],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                Image("BLOODITY")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 40)
                     .opacity(textOpacity)
 
                 // Tagline
