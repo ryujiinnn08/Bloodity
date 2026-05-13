@@ -98,7 +98,7 @@ struct MockData {
         latitude: 14.5995,
         longitude: 120.9842,
         isAvailable: true,
-        lastDonationDate: Calendar.current.date(byAdding: .day, value: -41, to: Date()),
+        lastDonationDate: nil,
         registrationDate: Calendar.current.date(byAdding: .month, value: -6, to: Date())!,
         totalDonations: 3,
         profileImageName: nil
