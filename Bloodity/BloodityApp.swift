@@ -1,32 +1,29 @@
-//
-//  BloodityApp.swift
-//  Bloodity
-//
-//  Created by Francis Aaron R. Ruzgal on 5/13/26.
-//
-
 import SwiftUI
-import SwiftData
 
 @main
 struct BloodityApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
+    @State private var authVM = AuthViewModel()
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ZStack {
+                if authVM.isShowingSplash {
+                    SplashScreen {
+                        withAnimation(.easeInOut(duration: 0.6)) {
+                            authVM.isShowingSplash = false
+                        }
+                    }
+                } else if authVM.isAuthenticated, let user = authVM.currentUser {
+                    MainTabView(user: user, authVM: authVM)
+                        .transition(.opacity)
+                } else {
+                    LoginView(authVM: authVM)
+                        .transition(.opacity)
+                }
+            }
+            .animation(.easeInOut(duration: 0.4), value: authVM.isAuthenticated)
+            .animation(.easeInOut(duration: 0.4), value: authVM.isShowingSplash)
+            .preferredColorScheme(.dark)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

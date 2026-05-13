@@ -1,0 +1,23 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcscmblueprint
+xcuserdata/
+
+# Swift Package Manager
+.build/
+Packages/
+
+# CocoaPods
+Pods/
+
+# Secrets — NEVER commit these
+Secrets.plist
+.env
+Bloodity/Secrets.plist
+
+# macOS
+.DS_Store
+*.swp
+*~
