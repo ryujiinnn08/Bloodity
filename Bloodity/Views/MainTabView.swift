@@ -3,6 +3,7 @@ import SwiftUI
 struct MainTabView: View {
     let user: User
     let authVM: AuthViewModel
+    var store = DataStore.shared
 
     var body: some View {
         Group {
@@ -25,19 +26,19 @@ struct MainTabView: View {
                 }
 
             NavigationStack {
-                DonorHistoryView(donations: donorVM.donationHistory, user: user)
+                DonorHistoryView(donations: store.donations, user: user)
             }
             .tabItem {
                 Label("History", systemImage: "clock.fill")
             }
 
             NavigationStack {
-                NotificationCenterView(notifications: MockData.donorNotifications)
+                NotificationCenterView(notifications: store.donorNotifications)
             }
             .tabItem {
                 Label("Alerts", systemImage: "bell.fill")
             }
-            .badge(MockData.donorNotifications.filter { !$0.isRead }.count)
+            .badge(store.unreadDonorNotificationCount)
 
             NavigationStack {
                 ProfileView(user: user, onLogout: { authVM.logout() })
@@ -73,12 +74,12 @@ struct MainTabView: View {
             .badge(vm.criticalStocks.count)
 
             NavigationStack {
-                NotificationCenterView(notifications: MockData.hospitalNotifications)
+                NotificationCenterView(notifications: store.hospitalNotifications)
             }
             .tabItem {
                 Label("Alerts", systemImage: "bell.fill")
             }
-            .badge(MockData.hospitalNotifications.filter { !$0.isRead }.count)
+            .badge(store.unreadHospitalNotificationCount)
 
             NavigationStack {
                 ProfileView(user: user, onLogout: { authVM.logout() })

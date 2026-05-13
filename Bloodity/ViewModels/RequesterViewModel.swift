@@ -3,8 +3,8 @@ import SwiftUI
 @Observable
 class RequesterViewModel {
     var currentUser: User
-    var myRequests: [BloodRequest]
     var selectedHospital: Hospital?
+    let store = DataStore.shared
 
     // New request form
     var newPatientName = ""
@@ -17,8 +17,13 @@ class RequesterViewModel {
 
     init(user: User) {
         self.currentUser = user
-        self.myRequests = MockData.bloodRequests
-        self.selectedHospital = MockData.hospitals.first
+        self.selectedHospital = store.hospitals.first
+    }
+
+    // MARK: - Computed (reads from DataStore)
+
+    var myRequests: [BloodRequest] {
+        store.bloodRequests.filter { $0.requesterUserId == currentUser.id }
     }
 
     var activeRequests: [BloodRequest] {
@@ -28,6 +33,8 @@ class RequesterViewModel {
     var completedRequests: [BloodRequest] {
         myRequests.filter { !$0.isActive }.sorted { $0.requestDate > $1.requestDate }
     }
+
+    // MARK: - Actions (write to DataStore)
 
     func submitRequest() {
         isSubmitting = true
@@ -51,10 +58,9 @@ class RequesterViewModel {
                 unitsNeeded: self.newUnits
             )
 
-            withAnimation(.spring(response: 0.5)) {
-                self.myRequests.insert(newRequest, at: 0)
-                self.isSubmitting = false
-            }
+            // Write to shared DataStore
+            self.store.addRequest(newRequest)
+            self.isSubmitting = false
 
             // Reset form
             self.newPatientName = ""
