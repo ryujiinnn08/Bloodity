@@ -27,7 +27,7 @@ struct MainTabView: View {
                 }
 
             NavigationStack {
-                DonorHistoryView(donations: store.donations, user: user)
+                DonorHistoryView(donations: store.donations, user: donorVM.currentUser)
             }
             .tabItem {
                 Label("History", systemImage: "clock.fill")
