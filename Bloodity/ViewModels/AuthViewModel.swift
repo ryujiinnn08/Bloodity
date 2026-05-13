@@ -32,7 +32,7 @@ class AuthViewModel {
         name: "Admin Panel",
         phone: "+63 900 000 0000",
         bloodType: .oPositive,
-        role: .hospital,
+        role: .admin,
         latitude: 14.5764,
         longitude: 120.9842,
         isAvailable: true,

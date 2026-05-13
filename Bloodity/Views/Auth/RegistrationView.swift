@@ -146,7 +146,7 @@ struct RegistrationView: View {
                 .foregroundColor(.textSecondary)
 
             HStack(spacing: 8) {
-                ForEach(UserRole.allCases, id: \.rawValue) { role in
+                ForEach(UserRole.registrableRoles, id: \.rawValue) { role in
                     Button {
                         withAnimation(.spring(response: 0.3)) {
                             authVM.regRole = role

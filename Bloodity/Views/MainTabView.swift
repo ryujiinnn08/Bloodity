@@ -10,6 +10,7 @@ struct MainTabView: View {
             switch user.role {
             case .user: userTabs
             case .hospital: hospitalTabs
+            case .admin: adminTabs
             }
         }
         .tint(.bloodRed)
@@ -72,6 +73,46 @@ struct MainTabView: View {
                 Label("AI Predict", systemImage: "brain.head.profile")
             }
             .badge(vm.criticalStocks.count)
+
+            NavigationStack {
+                NotificationCenterView(notifications: store.hospitalNotifications)
+            }
+            .tabItem {
+                Label("Alerts", systemImage: "bell.fill")
+            }
+            .badge(store.unreadHospitalNotificationCount)
+
+            NavigationStack {
+                ProfileView(user: user, onLogout: { authVM.logout() })
+            }
+            .tabItem {
+                Label("Profile", systemImage: "person.fill")
+            }
+        }
+    }
+
+    // MARK: - Admin Tabs
+    private var adminTabs: some View {
+        TabView {
+            AdminDashboard()
+                .tabItem {
+                    Label("Overview", systemImage: "shield.checkered")
+                }
+
+            NavigationStack {
+                AdminHospitalListView()
+            }
+            .tabItem {
+                Label("Hospitals", systemImage: "building.2.fill")
+            }
+            .badge(store.pendingHospitals.count)
+
+            NavigationStack {
+                AdminUsersView()
+            }
+            .tabItem {
+                Label("Users", systemImage: "person.2.fill")
+            }
 
             NavigationStack {
                 NotificationCenterView(notifications: store.hospitalNotifications)

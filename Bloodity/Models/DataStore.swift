@@ -158,4 +158,28 @@ class DataStore {
     var unreadHospitalNotificationCount: Int {
         hospitalNotifications.filter { !$0.isRead }.count
     }
+
+    // MARK: - Admin: Hospital Verification
+
+    var pendingHospitals: [Hospital] {
+        hospitals.filter { !$0.isVerified }
+    }
+
+    var verifiedHospitals: [Hospital] {
+        hospitals.filter { $0.isVerified }
+    }
+
+    func verifyHospital(_ hospitalId: UUID) {
+        guard let index = hospitals.firstIndex(where: { $0.id == hospitalId }) else { return }
+        withAnimation(.spring(response: 0.4)) {
+            hospitals[index].isVerified = true
+            hospitals[index].isPartner = true
+        }
+    }
+
+    func rejectHospital(_ hospitalId: UUID) {
+        withAnimation(.spring(response: 0.4)) {
+            hospitals.removeAll { $0.id == hospitalId }
+        }
+    }
 }

@@ -63,6 +63,28 @@ struct MockData {
             longitude: 120.9721,
             contactNumber: "+63 2 8527 0000",
             isPartner: true
+        ),
+        Hospital(
+            id: UUID(uuidString: "A0000007-0000-0000-0000-000000000007")!,
+            name: "Ospital ng Maynila",
+            shortName: "ONM",
+            address: "Quiricada St, Santa Cruz, Manila",
+            latitude: 14.6010,
+            longitude: 120.9830,
+            contactNumber: "+63 2 8711 2291",
+            isPartner: false,
+            isVerified: false
+        ),
+        Hospital(
+            id: UUID(uuidString: "A0000008-0000-0000-0000-000000000008")!,
+            name: "Cardinal Santos Medical Center",
+            shortName: "CSMC",
+            address: "Wilson St, San Juan City",
+            latitude: 14.6020,
+            longitude: 121.0350,
+            contactNumber: "+63 2 8727 0001",
+            isPartner: false,
+            isVerified: false
         )
     ]
 

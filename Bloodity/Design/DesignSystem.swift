@@ -266,11 +266,13 @@ enum RequestStatus: String, CaseIterable, Codable {
 enum UserRole: String, CaseIterable, Codable {
     case user = "User"
     case hospital = "Hospital"
+    case admin = "Admin"
 
     var icon: String {
         switch self {
         case .user: return "person.fill"
         case .hospital: return "cross.case.fill"
+        case .admin: return "shield.checkered"
         }
     }
 
@@ -278,7 +280,13 @@ enum UserRole: String, CaseIterable, Codable {
         switch self {
         case .user: return .bloodRed
         case .hospital: return .healBlue
+        case .admin: return .warmAmber
         }
+    }
+
+    /// Roles available in registration (admin is not self-registrable)
+    static var registrableRoles: [UserRole] {
+        [.user, .hospital]
     }
 }
 
