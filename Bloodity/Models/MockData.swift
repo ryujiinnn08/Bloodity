@@ -149,7 +149,7 @@ struct MockData {
             requestDate: Date().addingTimeInterval(-1800),
             radiusKm: 10,
             matchedDonorId: nil,
-            requesterUserId: userAccount.id,
+            requesterUserId: hospitalAccount.id,
             unitsNeeded: 3
         ),
         BloodRequest(
@@ -164,7 +164,7 @@ struct MockData {
             requestDate: Date().addingTimeInterval(-7200),
             radiusKm: 15,
             matchedDonorId: donors[1].id,
-            requesterUserId: userAccount.id,
+            requesterUserId: hospitalAccount.id,
             unitsNeeded: 2
         ),
         BloodRequest(
@@ -179,7 +179,7 @@ struct MockData {
             requestDate: Date().addingTimeInterval(-3600),
             radiusKm: 20,
             matchedDonorId: nil,
-            requesterUserId: userAccount.id,
+            requesterUserId: hospitalAccount.id,
             unitsNeeded: 1
         ),
         BloodRequest(
@@ -194,7 +194,7 @@ struct MockData {
             requestDate: Date().addingTimeInterval(-5400),
             radiusKm: 10,
             matchedDonorId: donors[4].id,
-            requesterUserId: userAccount.id,
+            requesterUserId: hospitalAccount.id,
             unitsNeeded: 4
         ),
         BloodRequest(
@@ -209,7 +209,7 @@ struct MockData {
             requestDate: Date().addingTimeInterval(-900),
             radiusKm: 25,
             matchedDonorId: nil,
-            requesterUserId: userAccount.id,
+            requesterUserId: hospitalAccount.id,
             unitsNeeded: 2
         ),
         BloodRequest(
