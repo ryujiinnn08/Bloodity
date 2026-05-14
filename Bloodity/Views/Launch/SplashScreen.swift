@@ -32,7 +32,7 @@ struct SplashScreen: View {
                 Image("BLOODITY-LOGO")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 140, height: 140)
                     .scaleEffect(logoScale)
                     .opacity(logoOpacity)
 
@@ -40,7 +40,7 @@ struct SplashScreen: View {
                 Image("BLOODITY")
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 40)
+                    .frame(height: 28)
                     .opacity(textOpacity)
 
                 // Tagline

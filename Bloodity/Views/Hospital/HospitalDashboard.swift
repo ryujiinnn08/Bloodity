@@ -407,6 +407,7 @@ struct HospitalDashboard: View {
                         request: request,
                         showActions: true,
                         onViewDonors: {
+                            viewModel.selectedBloodTypeFilter = request.bloodTypeNeeded
                             showDonorPool = true
                         }
                     )

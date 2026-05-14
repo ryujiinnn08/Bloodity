@@ -16,13 +16,13 @@ struct LoginView: View {
                         Image("BLOODITY-LOGO")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 70, height: 70)
+                            .frame(width: 100, height: 100)
                             .padding(.top, 40)
 
                         Image("BLOODITY")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: 32)
+                            .frame(height: 24)
 
                         Text("Sign in to save lives")
                             .font(BFont.body())
