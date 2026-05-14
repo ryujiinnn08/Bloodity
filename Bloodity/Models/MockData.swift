@@ -240,14 +240,14 @@ struct MockData {
 
     // MARK: - Blood Stock (for PGH)
     static let bloodStocks: [BloodStock] = [
-        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .aPositive, unitsAvailable: 45, lastUpdated: Date(), predictedDaysUntilDepletion: 22, severity: nil, dailyUsageRate: 2.1, weeklyForecast: [45, 41, 37, 33, 29]),
-        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .aNegative, unitsAvailable: 8, lastUpdated: Date(), predictedDaysUntilDepletion: 6, severity: .critical, dailyUsageRate: 1.3, weeklyForecast: [8, 5, 2, 0, 0]),
-        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .bPositive, unitsAvailable: 32, lastUpdated: Date(), predictedDaysUntilDepletion: 18, severity: nil, dailyUsageRate: 1.8, weeklyForecast: [32, 28, 24, 20, 16]),
-        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .bNegative, unitsAvailable: 5, lastUpdated: Date(), predictedDaysUntilDepletion: 4, severity: .critical, dailyUsageRate: 1.2, weeklyForecast: [5, 3, 1, 0, 0]),
-        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .abPositive, unitsAvailable: 18, lastUpdated: Date(), predictedDaysUntilDepletion: 15, severity: .watch, dailyUsageRate: 1.2, weeklyForecast: [18, 15, 12, 9, 6]),
-        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .abNegative, unitsAvailable: 3, lastUpdated: Date(), predictedDaysUntilDepletion: 3, severity: .critical, dailyUsageRate: 1.0, weeklyForecast: [3, 1, 0, 0, 0]),
-        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .oPositive, unitsAvailable: 52, lastUpdated: Date(), predictedDaysUntilDepletion: 20, severity: nil, dailyUsageRate: 2.6, weeklyForecast: [52, 47, 42, 37, 32]),
-        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .oNegative, unitsAvailable: 12, lastUpdated: Date(), predictedDaysUntilDepletion: 8, severity: .warning, dailyUsageRate: 1.5, weeklyForecast: [12, 9, 6, 3, 0]),
+        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .aPositive, unitsAvailable: 45, lastUpdated: Date(), dailyUsageRate: 2.1),
+        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .aNegative, unitsAvailable: 8, lastUpdated: Date(), dailyUsageRate: 1.3),
+        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .bPositive, unitsAvailable: 32, lastUpdated: Date(), dailyUsageRate: 1.8),
+        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .bNegative, unitsAvailable: 5, lastUpdated: Date(), dailyUsageRate: 1.2),
+        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .abPositive, unitsAvailable: 18, lastUpdated: Date(), dailyUsageRate: 1.2),
+        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .abNegative, unitsAvailable: 3, lastUpdated: Date(), dailyUsageRate: 1.0),
+        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .oPositive, unitsAvailable: 52, lastUpdated: Date(), dailyUsageRate: 2.6),
+        BloodStock(id: UUID(), hospitalId: hospitals[0].id, bloodType: .oNegative, unitsAvailable: 12, lastUpdated: Date(), dailyUsageRate: 1.5),
     ]
 
     // MARK: - Notifications
